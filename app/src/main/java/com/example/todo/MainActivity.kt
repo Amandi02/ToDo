@@ -13,8 +13,8 @@ import com.example.todo.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private  lateinit var binding: ActivityMainBinding
-    private  lateinit var db : NotesDatabaseHelper
-    private lateinit var  notesAdapter: NotesAdapter
+    private  lateinit var db : TodoDatabaseHelper
+    private lateinit var  todosAdapter: TodoAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,11 +22,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        db = NotesDatabaseHelper(this)
-        notesAdapter = NotesAdapter(db.getAllNotes(),this)
+        db = TodoDatabaseHelper(this)
+        todosAdapter = TodoAdapter(db.getAllNotes(),this)
 
-        binding.NotesRecycleView.layoutManager = LinearLayoutManager(this)
-        binding.NotesRecycleView.adapter = notesAdapter
+        binding.TodoRecycleView.layoutManager = LinearLayoutManager(this)
+        binding.TodoRecycleView.adapter = todosAdapter
 
         binding.addButton.setOnClickListener{
             val intent = Intent(this,AddToDoActivity::class.java) //when clicking the add button it goes to addnote activity
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        notesAdapter.refreshdata(db.getAllNotes())
+        todosAdapter.refreshdata(db.getAllTodos())
     }
 
 

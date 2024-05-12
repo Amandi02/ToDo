@@ -40,8 +40,8 @@ class TodoDatabaseHelper(context:Context): SQLiteOpenHelper(context,
         db.insert(TABLE_NAME,null,values)
         db.close()
     }
-    fun getAllNotes():List<Note>{
-        val notesList = mutableListOf<Note>()
+    fun getAllTodos():List<Todo>{
+        val todoList = mutableListOf<Todo>()
         val db = readableDatabase
         val query = "SELECT* FROM $TABLE_NAME"
         val cursor =db.rawQuery(query, null)
@@ -49,35 +49,35 @@ class TodoDatabaseHelper(context:Context): SQLiteOpenHelper(context,
         while (cursor.moveToNext()){
             val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
             val title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE))
-            val content = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT))
+            val content = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT)) //retrive the data from the database
 
-            val note = Note(id, title, content)
-            notesList.add(note)
+            val todo = Todo(id, title, content)
+            todoList.add(todo)
         }
 
         cursor.close()
         db.close()
-        return notesList
+        return todoList
 
     }
 
-    fun updateNote(note: Note){
+    fun updateTodo(todo: Todo){
         val db =writableDatabase
         val values = ContentValues().apply {
-            put(COLUMN_TITLE,note.title)
-            put(COLUMN_CONTENT,note.content)
+            put(COLUMN_TITLE,todo.title)
+            put(COLUMN_CONTENT,todo.content)
         }
 
         val whereClause ="$COLUMN_ID= ?"
-        val whereArgs = arrayOf(note.id.toString())
+        val whereArgs = arrayOf(todo.id.toString())
         db.update(TABLE_NAME,values,whereClause,whereArgs)
         db.close()
     }
 
 
-    fun getNoteByID(noteId: Int):Note{
+    fun getTodoByID(todoId: Int):Todo{
         val db = readableDatabase
-        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_ID = $noteId"
+        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_ID = $todoId"
         val cursor = db.rawQuery(query,null)
         cursor.moveToFirst()
 
@@ -87,14 +87,14 @@ class TodoDatabaseHelper(context:Context): SQLiteOpenHelper(context,
 
         cursor.close()
         db.close()
-        return Note(id,title,content)
+        return Todo(id,title,content)
 
     }
 
-    fun deleteNote(noteId: Int){
+    fun deleteTodo(todoId: Int){
         val db = writableDatabase
         val whereClause = "$COLUMN_ID = ?"
-        val whereArgs = arrayOf(noteId.toString())
+        val whereArgs = arrayOf(todoId.toString())
         db.delete(TABLE_NAME, whereClause,whereArgs)
         db.close()
     }
