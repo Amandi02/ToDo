@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class TodoAdapter(private var todos:List<Todo>,context: Context):
@@ -41,8 +42,9 @@ class TodoAdapter(private var todos:List<Todo>,context: Context):
             holder.itemView.context.startActivity(intent)
         }
         holder.deleteButton.setOnClickListener(){
-            db.deleteNote(note.id)
-            refreshdata(db.getAllNotes())
+            db.deleteTodo(todo.id)
+            refreshdata(db.getAllTodos())
+
         }
 
     }

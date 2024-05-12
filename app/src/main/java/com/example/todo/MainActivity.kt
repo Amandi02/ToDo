@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         db = TodoDatabaseHelper(this)
-        todosAdapter = TodoAdapter(db.getAllNotes(),this)
+        todosAdapter = TodoAdapter(db.getAllTodos(),this)
 
         binding.TodoRecycleView.layoutManager = LinearLayoutManager(this)
         binding.TodoRecycleView.adapter = todosAdapter
